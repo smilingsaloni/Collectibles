@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Custom CSS Variables */
+@layer base {
+  :root {
+    --primary: #6342ff;  /* Vibrant purple */
+    --primary-dark: #4e35c9;
+    --accent: #ff6b00;  /* Brighter orange accent */
+    --background: #ffffff;
+    --foreground: #171717;
+    --secondary: #e9e1ff;  /* Lighter purple tone */
+    --card-hover-shadow: 0 10px 25px -5px rgba(99, 66, 255, 0.15), 0 10px 10px -5px rgba(99, 66, 255, 0.08);
+  }
 }
 
 @theme inline {
@@ -14,8 +22,60 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0e0b1a; /* Darker purple-tinted background */
+    --foreground: #f0f0f0;
+    --secondary: #221760; /* Deeper purple for dark mode */
+    --primary: #7c63ff; /* Brighter purple for dark mode */
+    --accent: #ff8324; /* Slightly warmer orange for dark mode */
+  }
+}
+
+@layer components {
+  .card-hover {
+    @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-lg relative;
+  }
+  
+  .card-hover::after {
+    content: '';
+    @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 pointer-events-none;
+    box-shadow: var(--card-hover-shadow);
+  }
+  
+  .card-hover:hover::after {
+    @apply opacity-100;
+  }
+  
+  .btn-primary {
+    @apply px-6 py-3 bg-[var(--primary)] text-white rounded-lg transition-all duration-300 
+    hover:bg-[var(--primary-dark)] transform hover:-translate-y-1 hover:shadow-lg relative overflow-hidden;
+  }
+  
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 60%);
+  }
+  
+  .btn-primary:hover::before {
+    @apply opacity-100;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, var(--primary), var(--accent));
+  }
+}
+
+.hero-pattern {
+  background-color: #ffffff;
+  background-image: radial-gradient(#6342ff15 1.6px, transparent 1.6px);
+  background-size: 24px 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .hero-pattern {
+    background-color: transparent;
+    background-image: radial-gradient(rgba(124, 99, 255, 0.2) 1.6px, transparent 1.6px);
   }
 }
 
@@ -23,4 +83,51 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes pulse-subtle {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+.category-icon {
+  transition: all 0.3s ease;
+}
+
+.category-card:hover .category-icon {
+  transform: scale(1.1) translateY(-5px);
+}
+
+/* Custom scroll bar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(99, 66, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 66, 255, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 66, 255, 0.6);
 }
