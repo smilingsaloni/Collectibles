@@ -1,12 +1,11 @@
-'use client';
-import React from 'react';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { MessageSquare, Share2, Heart, Globe, Mail, ArrowRight } from 'lucide-react';
+"use client"
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { MessageSquare, Share2, Heart, Globe, ArrowRight } from "lucide-react"
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-  
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="bg-gray-50 dark:bg-neutral-900 pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -103,29 +102,29 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
 // Footer Link Component
 const FooterLink = ({ href, children }) => {
   return (
     <li>
-      <Link 
-        href={href} 
+      <Link
+        href={href}
         className="text-gray-600 hover:text-[var(--primary)] dark:text-gray-400 dark:hover:text-[var(--primary)] transition-colors duration-200"
       >
         {children}
       </Link>
     </li>
-  );
-};
+  )
+}
 
 // Social Link Component
 const SocialLink = ({ href, icon }) => {
   return (
-    <motion.a 
-      href={href} 
-      target="_blank" 
+    <motion.a
+      href={href}
+      target="_blank"
       rel="noopener noreferrer"
       className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-[var(--primary)] hover:text-white transition-colors duration-200"
       whileHover={{ scale: 1.1 }}
@@ -133,7 +132,7 @@ const SocialLink = ({ href, icon }) => {
     >
       {icon}
     </motion.a>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

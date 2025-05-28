@@ -24,7 +24,7 @@ const Login = () => {
                     const userData = { email: values.email, role: 'user' };
                     login(token, userData);
                     toast.success('Login Successful');
-                    router.push('/user/profile');
+                    router.push('/');
                 }).catch((err) => {
                     console.log(err);
                     toast.error('Login Failed');

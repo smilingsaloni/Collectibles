@@ -23,6 +23,17 @@ const AddProductSchema = Yup.object().shape({
 });
 
 const AddProduct = () => {
+    const [previewUrl, setPreviewUrl] = React.useState(null);
+
+    React.useEffect(() => {
+        // Cleanup preview URL when component unmounts
+        return () => {
+            if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+            }
+        };
+    }, []);
+
     const formik = useFormik({
         initialValues: {
             title: "",
@@ -35,36 +46,68 @@ const AddProduct = () => {
         onSubmit: async (values, { resetForm }) => {
             try {
                 // 1. Upload image to Cloudinary
-                const cloudName = "YOUR_CLOUD_NAME"; // <-- Replace with your Cloudinary cloud name
-                const uploadPreset = "YOUR_UNSIGNED_UPLOAD_PRESET"; // <-- Replace with your unsigned upload preset
+                const cloudName = "dilx82lku";
+                const uploadPreset = "mypreset";
                 const imageData = new FormData();
                 imageData.append("file", values.image);
                 imageData.append("upload_preset", uploadPreset);
+                imageData.append("cloud_name", cloudName);
+
                 const cloudinaryRes = await axios.post(
                     `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-                    imageData
+                    imageData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                        transformRequest: [(data, headers) => {
+                            delete headers['Authorization'];
+                            return data;
+                        }],
+                    }
                 );
                 const imageUrl = cloudinaryRes.data.secure_url;
+
                 // 2. Send product data to backend with Cloudinary image URL
-                const formData = new FormData();
-                formData.append("title", values.title);
-                formData.append("description", values.description);
-                formData.append("category", values.category);
-                formData.append("price", values.price);
-                formData.append("image", imageUrl);
-                await axios.post("http://localhost:5000/product/add", formData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                });
+                const productData = {
+                    name: values.title,
+                    description: values.description,
+                    category: values.category,
+                    price: Number(values.price),
+                    images: [imageUrl],
+                    admin: "6473362b1025df8d34ac773a"  // Using a default admin ID
+                };
+                
+                await axios.post("http://localhost:5000/product/add", productData);
+                
+                // Clear preview and form
+                setPreviewUrl(null);
                 toast.success("Product added successfully!");
                 resetForm();
             } catch (err) {
-                toast.error("Failed to add product");
+                console.error(err);
+                toast.error(err.response?.data?.message || "Failed to add product");
             }
         },
-    });    return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-50">
-                <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg border border-gray-200">
-                    <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Add New Product</h2>
+    });
+
+    const handleImageChange = (event) => {
+        const file = event.currentTarget.files[0];
+        if (file) {
+            formik.setFieldValue("image", file);
+            // Create and set preview URL
+            const objectUrl = URL.createObjectURL(file);
+            if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+            }
+            setPreviewUrl(objectUrl);
+        }
+    };
+
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+            <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg border border-gray-200">
+                <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Add New Product</h2>
                 <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
                     <div className="mb-4">
                         <label className="block mb-1 font-medium">Product Name</label>
@@ -129,13 +172,20 @@ const AddProduct = () => {
                             type="file"
                             name="image"
                             accept="image/*"
-                            onChange={(event) => {
-                                formik.setFieldValue("image", event.currentTarget.files[0]);
-                            }}
+                            onChange={handleImageChange}
                             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                         />
                         {formik.errors.image && formik.touched.image && (
                             <p className="text-xs text-red-600 mt-1">{formik.errors.image}</p>
+                        )}
+                        {previewUrl && (
+                            <div className="mt-4">
+                                <img
+                                    src={previewUrl}
+                                    alt="Preview"
+                                    className="w-full max-h-[200px] object-contain rounded-lg border border-gray-200"
+                                />
+                            </div>
                         )}
                     </div>
                     <button

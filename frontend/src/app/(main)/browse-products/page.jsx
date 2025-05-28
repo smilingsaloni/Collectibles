@@ -34,62 +34,23 @@ const BrowseProductsPage = () => {
   useEffect(() => {
     filterProducts();
   }, [searchTerm, selectedCategory, priceRange, sortBy, products]);
-
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // Mock products data - replace with actual API call
-      const mockProducts = [
-        {
-          id: 1,
-          name: 'Vintage Baseball Card - Babe Ruth',
-          description: 'Rare 1921 Babe Ruth baseball card in excellent condition',
-          price: 299.99,
-          category: 'cards',
-          image: '/api/placeholder/300/200',
-          rating: 4.8,
-          reviews: 24,
-          inStock: true,
-          seller: 'Classic Cards Co.'
-        },
-        {
-          id: 2,
-          name: 'Limited Edition Comic Book',
-          description: 'First edition Superman comic book from 1940',
-          price: 89.99,
-          category: 'comics',
-          image: '/api/placeholder/300/200',
-          rating: 4.6,
-          reviews: 18,
-          inStock: true,
-          seller: 'Comic Treasures'
-        },
-        {
-          id: 3,
-          name: 'Vintage Action Figure',
-          description: 'Original Star Wars Luke Skywalker figure, still in packaging',
-          price: 159.99,
-          category: 'toys',
-          image: '/api/placeholder/300/200',
-          rating: 4.9,
-          reviews: 32,
-          inStock: false,
-          seller: 'Toy Vault'
-        },
-        {
-          id: 4,
-          name: 'Rare Silver Coin',
-          description: '1893-S Morgan Silver Dollar in mint condition',
-          price: 445.00,
-          category: 'coins',
-          image: '/api/placeholder/300/200',
-          rating: 4.7,
-          reviews: 15,
-          inStock: true,
-          seller: 'Coin Masters'
-        }
-      ];
-      setProducts(mockProducts);
+      const response = await axios.get('http://localhost:5000/product/getall');
+      const productsFromDB = response.data.map(product => ({
+        id: product._id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        category: product.category,
+        image: product.images?.[0] || '/api/placeholder/300/200',
+        rating: 4.5, // TODO: Implement ratings system
+        reviews: 0,  // TODO: Implement reviews system
+        inStock: true, // TODO: Implement stock management
+        seller: product.admin?.name || 'Anonymous Seller'
+      }));
+      setProducts(productsFromDB);
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
