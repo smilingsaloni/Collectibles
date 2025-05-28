@@ -3,21 +3,28 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import React from 'react'
 import toast from 'react-hot-toast';
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
+    const { login } = useAuth();
+    const router = useRouter();
 
     const loginForm = useFormik({
         initialValues: {
             email: '',
             password: ''
-        },
-        onSubmit: (values) => {
+        },        onSubmit: (values) => {
             console.log(values);
 
             axios.post('http://localhost:5000/user/authenticate', values)
                 .then((response) => {
+                    const { token } = response.data;
+                    // Create user object from the response with role
+                    const userData = { email: values.email, role: 'user' };
+                    login(token, userData);
                     toast.success('Login Successful');
-                    localStorage.setItem('user', JSON.stringify(response.data));
+                    router.push('/user/profile');
                 }).catch((err) => {
                     console.log(err);
                     toast.error('Login Failed');

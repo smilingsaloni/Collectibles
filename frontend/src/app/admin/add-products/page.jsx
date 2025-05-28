@@ -61,12 +61,10 @@ const AddProduct = () => {
                 toast.error("Failed to add product");
             }
         },
-    });
-
-    return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50">
-            <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg border border-gray-200">
-                <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Add New Product</h2>
+    });    return (
+            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+                <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg border border-gray-200">
+                    <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Add New Product</h2>
                 <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
                     <div className="mb-4">
                         <label className="block mb-1 font-medium">Product Name</label>
@@ -143,8 +141,7 @@ const AddProduct = () => {
                     <button
                         type="submit"
                         className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all"
-                    >
-                        Add Product
+                    >                        Add Product
                     </button>
                 </form>
             </div>

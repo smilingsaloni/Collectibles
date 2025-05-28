@@ -3,12 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, Search, ShoppingBag, User, Sun, Moon } from 'lucide-react';
+import { Menu, Search, ShoppingBag, User, Sun, Moon, LogOut, Settings, UserCircle } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  
+  const { isAuthenticated, isAdmin, isUser, user, logout } = useAuth();
 
   // Check if page is scrolled
   useEffect(() => {
@@ -45,18 +49,25 @@ const Navbar = () => {
             >
               Collectibles
             </motion.div>
-          </Link>
-
-          {/* Desktop Navigation */}
+          </Link>          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <NavLink href="/">Home</NavLink>
-            <NavLink href="/marketplace">Marketplace</NavLink>
-            <NavLink href="/categories">Categories</NavLink>
-            <NavLink href="/sell">Sell</NavLink>
-            <NavLink href="/about">About</NavLink>
-          </nav>
-
-          {/* Desktop Actions */}
+            <NavLink href="/browse-products">Browse</NavLink>
+            {isAuthenticated() && isUser() && (
+              <>
+                <NavLink href="/user/cart">Cart</NavLink>
+                <NavLink href="/user/profile">Profile</NavLink>
+              </>
+            )}
+            {isAuthenticated() && isAdmin() && (
+              <>
+                <NavLink href="/admin/add-products">Add Products</NavLink>
+                <NavLink href="/admin/manage-products">Manage Products</NavLink>
+                <NavLink href="/admin/manage-users">Manage Users</NavLink>
+                <NavLink href="/admin/profile">Admin Profile</NavLink>
+              </>
+            )}
+          </nav>          {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
             <motion.button 
               className="p-2 rounded-full text-gray-600 hover:text-[var(--primary)] dark:text-gray-400 dark:hover:text-[var(--primary)]"
@@ -75,22 +86,85 @@ const Navbar = () => {
               <Search size={20} />
             </motion.button>
             
-            <motion.button 
-              className="p-2 rounded-full text-gray-600 hover:text-[var(--primary)] dark:text-gray-400 dark:hover:text-[var(--primary)]"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <ShoppingBag size={20} />
-            </motion.button>
+            {isAuthenticated() && isUser() && (
+              <Link href="/user/cart">
+                <motion.button 
+                  className="p-2 rounded-full text-gray-600 hover:text-[var(--primary)] dark:text-gray-400 dark:hover:text-[var(--primary)]"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <ShoppingBag size={20} />
+                </motion.button>
+              </Link>
+            )}
             
-            <motion.button 
-              className="flex items-center gap-2 py-2 px-4 bg-[var(--primary)] text-white rounded-lg transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <User size={16} />
-              <span>Sign In</span>
-            </motion.button>
+            {!isAuthenticated() ? (
+              <div className="flex items-center gap-2">
+                <Link href="/login">
+                  <motion.button 
+                    className="flex items-center gap-2 py-2 px-4 bg-[var(--primary)] text-white rounded-lg transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <User size={16} />
+                    <span>Sign In</span>
+                  </motion.button>
+                </Link>
+                <Link href="/signup">
+                  <motion.button 
+                    className="flex items-center gap-2 py-2 px-4 border border-[var(--primary)] text-[var(--primary)] rounded-lg transition-all duration-300 hover:bg-[var(--primary)] hover:text-white"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <span>Sign Up</span>
+                  </motion.button>
+                </Link>
+              </div>
+            ) : (
+              <div className="relative">
+                <motion.button 
+                  className="flex items-center gap-2 py-2 px-4 bg-[var(--primary)] text-white rounded-lg transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                >
+                  <UserCircle size={16} />
+                  <span>{user?.email?.split('@')[0] || 'User'}</span>
+                </motion.button>
+                
+                {showUserMenu && (
+                  <motion.div 
+                    className="absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                  >
+                    {isUser() && (
+                      <Link href="/user/profile" className="flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-700">
+                        <Settings size={16} />
+                        Profile
+                      </Link>
+                    )}
+                    {isAdmin() && (
+                      <Link href="/admin/profile" className="flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-700">
+                        <Settings size={16} />
+                        Admin Panel
+                      </Link>
+                    )}
+                    <button 
+                      onClick={() => {
+                        logout();
+                        setShowUserMenu(false);
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-neutral-700 w-full text-left"
+                    >
+                      <LogOut size={16} />
+                      Logout
+                    </button>
+                  </motion.div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -114,19 +188,53 @@ const Navbar = () => {
           x: isMobileMenuOpen ? 0 : '100%'
         }}
         transition={{ duration: 0.3 }}
-      >
-        <nav className="flex flex-col gap-4">
+      >        <nav className="flex flex-col gap-4">
           <MobileNavLink href="/" onClick={() => setIsMobileMenuOpen(false)}>Home</MobileNavLink>
-          <MobileNavLink href="/marketplace" onClick={() => setIsMobileMenuOpen(false)}>Marketplace</MobileNavLink>
-          <MobileNavLink href="/categories" onClick={() => setIsMobileMenuOpen(false)}>Categories</MobileNavLink>
-          <MobileNavLink href="/sell" onClick={() => setIsMobileMenuOpen(false)}>Sell</MobileNavLink>
-          <MobileNavLink href="/about" onClick={() => setIsMobileMenuOpen(false)}>About</MobileNavLink>
+          <MobileNavLink href="/browse-products" onClick={() => setIsMobileMenuOpen(false)}>Browse</MobileNavLink>
+          
+          {isAuthenticated() && isUser() && (
+            <>
+              <MobileNavLink href="/user/cart" onClick={() => setIsMobileMenuOpen(false)}>Cart</MobileNavLink>
+              <MobileNavLink href="/user/profile" onClick={() => setIsMobileMenuOpen(false)}>Profile</MobileNavLink>
+            </>
+          )}
+          
+          {isAuthenticated() && isAdmin() && (
+            <>
+              <MobileNavLink href="/admin/add-products" onClick={() => setIsMobileMenuOpen(false)}>Add Products</MobileNavLink>
+              <MobileNavLink href="/admin/manage-products" onClick={() => setIsMobileMenuOpen(false)}>Manage Products</MobileNavLink>
+              <MobileNavLink href="/admin/manage-users" onClick={() => setIsMobileMenuOpen(false)}>Manage Users</MobileNavLink>
+              <MobileNavLink href="/admin/profile" onClick={() => setIsMobileMenuOpen(false)}>Admin Profile</MobileNavLink>
+            </>
+          )}
           
           <div className="flex items-center justify-between mt-4 border-t border-gray-100 dark:border-gray-800 pt-4">
-            <button className="flex items-center gap-2 py-2 px-4 bg-[var(--primary)] text-white rounded-lg">
-              <User size={16} />
-              <span>Sign In</span>
-            </button>
+            {!isAuthenticated() ? (
+              <div className="flex gap-2">
+                <Link href="/login">
+                  <button className="flex items-center gap-2 py-2 px-4 bg-[var(--primary)] text-white rounded-lg">
+                    <User size={16} />
+                    <span>Sign In</span>
+                  </button>
+                </Link>
+                <Link href="/signup">
+                  <button className="flex items-center gap-2 py-2 px-4 border border-[var(--primary)] text-[var(--primary)] rounded-lg">
+                    <span>Sign Up</span>
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              <button 
+                onClick={() => {
+                  logout();
+                  setIsMobileMenuOpen(false);
+                }}
+                className="flex items-center gap-2 py-2 px-4 bg-red-600 text-white rounded-lg"
+              >
+                <LogOut size={16} />
+                <span>Logout</span>
+              </button>
+            )}
             
             <div className="flex items-center gap-3">
               <button className="p-2 rounded-full text-gray-600 hover:text-[var(--primary)] dark:text-gray-400 dark:hover:text-[var(--primary)]">

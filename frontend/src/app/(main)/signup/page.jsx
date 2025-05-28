@@ -25,9 +25,9 @@ const Signup = () => {
             email: '',
             password: '',
             confirmPassword: ''
-        },
-        onSubmit: (values, { resetForm }) => {
-            axios.post('http://localhost:5000/user/add', values)
+        },        onSubmit: (values, { resetForm }) => {
+            const userData = { ...values, role: 'user' };
+            axios.post('http://localhost:5000/user/add', userData)
                 .then((result) => {
                     toast.success('User Created Successfully !!')
                     resetForm();

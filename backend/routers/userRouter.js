@@ -32,5 +32,64 @@ router.get('/getall', (req, res) => {
         });
 })
 
-module.exports = router;
+router.get('/getbyid/:id', (req, res) => {
+    Model.findById(req.params.id)
+        .then((result) => {
+            res.status(200).json(result);
+        }).catch((err) => {
+            res.status(500).json({message: 'Internal Server Error'});
+            console.log(err);
+        });
+})
 
+router.delete('/delete/:id', (req, res) => {
+    Model.findByIdAndDelete(req.params.id)
+        .then((result) => {
+            res.status(200).json(result);
+        }).catch((err) => {
+            res.status(500).json({message: 'Internal Server Error'});
+            console.log(err);
+        });
+})
+
+router.put('/update/:id', (req, res) => {
+    Model.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        .then((result) => {
+            res.status(200).json(result);
+        }).catch((err) => {
+            res.status(500).json({message: 'Internal Server Error'});
+            console.log(err);
+        });
+})
+
+router.post('/authenticate', (req, res) => {
+    Model.findOne(req.body)
+        .then((result) => {
+            if(result){
+                // email and password match
+                // generate token
+
+                const { _id, email, password} = result;
+                const payload = { _id, email, password};
+
+                jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
+                    if(err){
+                        console.log(err);
+                        res.status(500).json(err);
+                    }else{
+                        res.status(200).json({token});
+                    }
+                } )
+
+            } else {
+                res.status(401).json({message: 'Invalid Credentials'});
+            }
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json({message: 'Internal Server Error'});
+        });
+});
+
+
+
+module.exports = router;
