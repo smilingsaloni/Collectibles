@@ -28,9 +28,11 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 dark:from-neutral-950 dark:to-neutral-900`}
       >
         <AuthProvider>
-          <div className=" mx-auto">
+          <div className="">
             <Navbar />
-            {children}
+            <div className="py-20">
+              {children}
+            </div>
             <Footer />
           </div>
           <Toaster position="top-right" />

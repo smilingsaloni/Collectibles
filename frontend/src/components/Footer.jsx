@@ -49,9 +49,7 @@ const Footer = () => {
               <FooterLink href="/privacy">Privacy Policy</FooterLink>
               <FooterLink href="/terms">Terms of Service</FooterLink>
             </ul>
-          </div>
-
-          {/* Newsletter */}
+          </div>          {/* Newsletter */}
           <div>
             <h4 className="text-lg font-bold mb-4 text-gray-800 dark:text-white">Subscribe</h4>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
@@ -61,15 +59,14 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Your email address"
-                className="px-4 py-2 rounded-l-lg border-0 focus:ring-2 focus:ring-[var(--primary)] flex-grow"
+                className="px-4 py-2 rounded-l-lg border-0 focus:ring-2 focus:ring-[var(--primary)] flex-grow outline-none"
               />
-              <motion.button
-                className="bg-[var(--primary)] text-white p-2 rounded-r-lg"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
+                type="button"
+                className="bg-[var(--primary)] text-white p-2 rounded-r-lg hover:scale-105 active:scale-95 transition-transform"
               >
                 <ArrowRight size={20} />
-              </motion.button>
+              </button>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-500">
               By subscribing, you agree to our Privacy Policy and consent to receive updates.

@@ -2,16 +2,21 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { Menu, Search, ShoppingBag, User, Sun, Moon, LogOut, Settings, UserCircle } from "lucide-react"
+import { Menu, ShoppingBag, User, LogOut, Settings, UserCircle } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   const { isAuthenticated, isAdmin, isUser, user, logout } = useAuth()
+
+  // Handle mounting
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Check if page is scrolled
   useEffect(() => {
@@ -20,11 +25,6 @@ const Navbar = () => {
     }
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  // Check user's preferred color scheme
-  useEffect(() => {
-    setIsDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches)
   }, [])
 
   return (
@@ -65,23 +65,6 @@ const Navbar = () => {
           </nav>{" "}
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <motion.button
-              className="p-2 rounded-full text-gray-600 hover:text-[var(--primary)] dark:text-gray-400 dark:hover:text-[var(--primary)]"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsDarkMode(!isDarkMode)}
-            >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </motion.button>
-
-            <motion.button
-              className="p-2 rounded-full text-gray-600 hover:text-[var(--primary)] dark:text-gray-400 dark:hover:text-[var(--primary)]"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Search size={20} />
-            </motion.button>
-
             {isAuthenticated() && isUser() && (
               <Link href="/user/cart">
                 <motion.button
@@ -190,7 +173,6 @@ const Navbar = () => {
         }}
         transition={{ duration: 0.3 }}
       >
-        {" "}
         <nav className="flex flex-col gap-4">
           <MobileNavLink href="/" onClick={() => setIsMobileMenuOpen(false)}>
             Home
@@ -254,21 +236,6 @@ const Navbar = () => {
                 <span>Logout</span>
               </button>
             )}
-
-            <div className="flex items-center gap-3">
-              <button className="p-2 rounded-full text-gray-600 hover:text-[var(--primary)] dark:text-gray-400 dark:hover:text-[var(--primary)]">
-                <Search size={20} />
-              </button>
-              <button className="p-2 rounded-full text-gray-600 hover:text-[var(--primary)] dark:text-gray-400 dark:hover:text-[var(--primary)]">
-                <ShoppingBag size={20} />
-              </button>
-              <button
-                className="p-2 rounded-full text-gray-600 hover:text-[var(--primary)] dark:text-gray-400 dark:hover:text-[var(--primary)]"
-                onClick={() => setIsDarkMode(!isDarkMode)}
-              >
-                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
-            </div>
           </div>
         </nav>
       </motion.div>
