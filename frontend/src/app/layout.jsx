@@ -30,10 +30,12 @@ export default function RootLayout({ children }) {
       >
         <AuthProvider>
           <CartProvider>
-            <div className=" mx-auto">
+            <div className="">
               <Navbar />
+              <div className="py-20">
               {children}
-              <Footer />
+              </div>
+            <Footer />
             </div>
             <Toaster position="top-right" />
           </CartProvider>

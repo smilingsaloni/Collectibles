@@ -5,6 +5,7 @@ import React from 'react'
 import toast from 'react-hot-toast';
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
     const { login } = useAuth();
@@ -14,14 +15,19 @@ const Login = () => {
         initialValues: {
             email: '',
             password: ''
-        },        onSubmit: (values) => {
+        }, onSubmit: (values) => {
             console.log(values);
-
             axios.post('http://localhost:5000/user/authenticate', values)
                 .then((response) => {
                     const { token } = response.data;
-                    // Create user object from the response with role
-                    const userData = { email: values.email, role: 'user' };
+                    // Decode the token to get user data
+                    const decodedToken = jwtDecode(token);
+                    // Create user object from the decoded token with role
+                    const userData = { 
+                        ...decodedToken, 
+                        email: values.email,
+                        role: 'user' 
+                    };
                     login(token, userData);
                     toast.success('Login Successful');
                     router.push('/');
