@@ -3,6 +3,7 @@ import "./globals.css"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { AuthProvider } from "@/context/AuthContext"
+import { CartProvider } from "@/context/CartContext"
 import { Toaster } from "react-hot-toast"
 
 const geistSans = Geist({
@@ -28,12 +29,14 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 dark:from-neutral-950 dark:to-neutral-900`}
       >
         <AuthProvider>
-          <div className=" mx-auto">
-            <Navbar />
-            {children}
-            <Footer />
-          </div>
-          <Toaster position="top-right" />
+          <CartProvider>
+            <div className=" mx-auto">
+              <Navbar />
+              {children}
+              <Footer />
+            </div>
+            <Toaster position="top-right" />
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

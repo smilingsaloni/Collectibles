@@ -1,85 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 import { PageLoader } from '@/components/LoadingSpinner';
 import { ShoppingCart, Plus, Minus, Trash2, CreditCard, MapPin } from 'lucide-react';
 import axios from 'axios';
 
 const CartPage = () => {
   const { user } = useAuth();
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { cartItems, updateQuantity, removeFromCart } = useCart();
   const [updating, setUpdating] = useState(false);
 
-  useEffect(() => {
-    fetchCartItems();
-  }, []);
-
-  const fetchCartItems = async () => {
-    try {
-      setLoading(true);
-      // Mock cart data - replace with actual API call
-      const mockCartItems = [
-        {
-          id: 1,
-          product: {
-            id: 1,
-            name: 'Vintage Baseball Card - Babe Ruth',
-            price: 299.99,
-            image: '/api/placeholder/200/150'
-          },
-          quantity: 2
-        },
-        {
-          id: 2,
-          product: {
-            id: 2,
-            name: 'Limited Edition Comic Book',
-            price: 89.99,
-            image: '/api/placeholder/200/150'
-          },
-          quantity: 1
-        }
-      ];
-      setCartItems(mockCartItems);
-    } catch (error) {
-      console.error('Error fetching cart items:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateQuantity = async (itemId, newQuantity) => {
+  const handleUpdateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) return;
-
     setUpdating(true);
-    try {
-      // Mock update - replace with actual API call
-      setCartItems(prev =>
-        prev.map(item =>
-          item.id === itemId
-            ? { ...item, quantity: newQuantity }
-            : item
-        )
-      );
-    } catch (error) {
-      console.error('Error updating quantity:', error);
-    } finally {
-      setUpdating(false);
-    }
+    updateQuantity(itemId, newQuantity);
+    setUpdating(false);
   };
 
-  const removeItem = async (itemId) => {
+  const handleRemoveItem = async (itemId) => {
     setUpdating(true);
-    try {
-      // Mock remove - replace with actual API call
-      setCartItems(prev => prev.filter(item => item.id !== itemId));
-    } catch (error) {
-      console.error('Error removing item:', error);
-    } finally {
-      setUpdating(false);
-    }
+    removeFromCart(itemId);
+    setUpdating(false);
   };
 
   const calculateTotal = () => {
@@ -92,7 +35,7 @@ const CartPage = () => {
     // Implement checkout logic
     alert('Checkout functionality will be implemented soon!');
   };
-  if (loading) {
+  if (!cartItems) {
     return <PageLoader text="Loading your cart..." />;
   }
   return (
@@ -151,7 +94,7 @@ const CartPage = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
                           disabled={updating || item.quantity <= 1}
                           className="p-1 rounded-md hover:bg-gray-100 disabled:opacity-50"
                         >
@@ -161,7 +104,7 @@ const CartPage = () => {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
                           disabled={updating}
                           className="p-1 rounded-md hover:bg-gray-100 disabled:opacity-50"
                         >
@@ -172,7 +115,7 @@ const CartPage = () => {
                         ${(item.product.price * item.quantity).toFixed(2)}
                       </div>
                       <button
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => handleRemoveItem(item.id)}
                         disabled={updating}
                         className="p-2 text-red-400 hover:text-red-600 disabled:opacity-50"
                       >

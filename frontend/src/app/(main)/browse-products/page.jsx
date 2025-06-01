@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 import { PageLoader, CardSkeleton } from '@/components/LoadingSpinner';
 import { Search, Filter, Heart, ShoppingCart, Star, Grid, List } from 'lucide-react';
 import axios from 'axios';
 
 const BrowseProductsPage = () => {
   const { user, isAuthenticated } = useAuth();
+  const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -114,14 +116,12 @@ const BrowseProductsPage = () => {
     });
   };
 
-  const addToCart = (product) => {
+  const addToCartHandler = (product) => {
     if (!isAuthenticated()) {
       alert('Please login to add items to your cart');
       return;
     }
-
-    // Implement add to cart logic
-    alert(`${product.name} added to cart!`);
+    addToCart(product, 1);
   };
 
   const ProductCard = ({ product }) => (
@@ -181,7 +181,7 @@ const BrowseProductsPage = () => {
           <span className="text-sm text-gray-500">by {product.seller}</span>
         </div>
         <button
-          onClick={() => addToCart(product)}
+          onClick={() => addToCartHandler(product)}
           disabled={!product.inStock}
           className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${
             product.inStock
