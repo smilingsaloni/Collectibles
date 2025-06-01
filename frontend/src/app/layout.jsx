@@ -33,9 +33,9 @@ export default function RootLayout({ children }) {
             <div className="">
               <Navbar />
               <div className="py-20">
-              {children}
+                {children}
               </div>
-            <Footer />
+              <Footer />
             </div>
             <Toaster position="top-right" />
           </CartProvider>
