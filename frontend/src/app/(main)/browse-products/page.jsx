@@ -134,11 +134,10 @@ const BrowseProductsPage = () => {
         />
         <button
           onClick={() => toggleWishlist(product.id)}
-          className={`absolute top-3 right-3 p-2 rounded-full ${
-            wishlist.has(product.id)
+          className={`absolute top-3 right-3 p-2 rounded-full ${wishlist.has(product.id)
               ? 'bg-red-500 text-white'
               : 'bg-white text-gray-400 hover:text-red-500'
-          } transition-colors`}
+            } transition-colors`}
         >
           <Heart className={`h-4 w-4 ${wishlist.has(product.id) ? 'fill-current' : ''}`} />
         </button>
@@ -162,11 +161,10 @@ const BrowseProductsPage = () => {
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`h-4 w-4 ${
-                  i < Math.floor(product.rating)
+                className={`h-4 w-4 ${i < Math.floor(product.rating)
                     ? 'text-yellow-400 fill-current'
                     : 'text-gray-300'
-                }`}
+                  }`}
               />
             ))}
           </div>
@@ -183,11 +181,10 @@ const BrowseProductsPage = () => {
         <button
           onClick={() => addToCartHandler(product)}
           disabled={!product.inStock}
-          className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${
-            product.inStock
+          className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${product.inStock
               ? 'bg-blue-600 text-white hover:bg-blue-700'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
+            }`}
         >
           {product.inStock ? (
             <>
@@ -211,7 +208,7 @@ const BrowseProductsPage = () => {
         {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Browse Collectibles</h1>
-          
+
           {/* Search and Filters */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Search */}
@@ -255,21 +252,19 @@ const BrowseProductsPage = () => {
             <div className="flex space-x-2">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-md ${
-                  viewMode === 'grid'
+                className={`p-2 rounded-md ${viewMode === 'grid'
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-                }`}
+                  }`}
               >
                 <Grid className="h-5 w-5" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2 rounded-md ${
-                  viewMode === 'list'
+                className={`p-2 rounded-md ${viewMode === 'list'
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-                }`}
+                  }`}
               >
                 <List className="h-5 w-5" />
               </button>
@@ -292,11 +287,10 @@ const BrowseProductsPage = () => {
             </p>
           </div>
         ) : (
-          <div className={`grid gap-6 ${
-            viewMode === 'grid'
+          <div className={`grid gap-6 ${viewMode === 'grid'
               ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
               : 'grid-cols-1'
-          }`}>
+            }`}>
             {filteredProducts.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
