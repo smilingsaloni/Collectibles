@@ -51,7 +51,8 @@ const Navbar = () => {
             {isAuthenticated() && isUser() && (
               <>
                 <NavLink href="/user/cart">Cart</NavLink>
-                <NavLink href="/user/profile">Profile</NavLink>
+                {/* <NavLink href="/user/profile">Profile</NavLink> */}
+                <NavLink href="/user/orders">Orders</NavLink>
               </>
             )}
             {isAuthenticated() && isAdmin() && (

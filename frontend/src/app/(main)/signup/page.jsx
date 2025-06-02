@@ -41,15 +41,15 @@ const Signup = () => {
     })
 
     return (
-        <div className='mx-auto flex items-center justify-center min-h-screen bg-gray-50'>
-            <div className="mt-7 bg-white border border-gray-200 rounded-xl w-[30%] shadow-2xs">
+        <div className='mx-auto flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900'>
+            <div className="mt-7 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl w-[30%] shadow-2xs">
                 <div className="p-4 sm:p-7">
                     <div className="text-center">
-                        <h1 className="block text-2xl font-bold text-gray-800">Sign up</h1>
-                        <p className="mt-2 text-sm text-gray-600">
+                        <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Sign up</h1>
+                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                             Already have an account?
                             <a
-                                className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
+                                className="text-blue-600 dark:text-blue-400 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
                                 href="../examples/html/signin.html"
                             >
                                 Sign in here
@@ -59,7 +59,7 @@ const Signup = () => {
                     <div className="mt-5">
                         <button
                             type="button"
-                            className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+                            className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-white shadow-2xs hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-hidden focus:bg-gray-50 dark:focus:bg-gray-700 disabled:opacity-50 disabled:pointer-events-none"
                         >
                             <svg
                                 className="w-4 h-auto"
@@ -87,7 +87,7 @@ const Signup = () => {
                             </svg>
                             Sign up with Google
                         </button>
-                        <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6">
+                        <div className="py-3 flex items-center text-xs text-gray-400 dark:text-gray-500 uppercase before:flex-1 before:border-t before:border-gray-200 dark:before:border-gray-700 before:me-6 after:flex-1 after:border-t after:border-gray-200 dark:after:border-gray-700 after:ms-6">
                             Or
                         </div>
                         {/* Form */}
@@ -95,7 +95,7 @@ const Signup = () => {
                             <div className="grid gap-y-4">
                                 {/* Form Group */}
                                 <div>
-                                    <label htmlFor="name" className="block text-sm mb-2">
+                                    <label htmlFor="name" className="block text-sm mb-2 dark:text-gray-300">
                                         Name
                                     </label>
                                     <div className="relative">
@@ -105,7 +105,7 @@ const Signup = () => {
                                             name="name"
                                             onChange={signupForm.handleChange}
                                             value={signupForm.values.name}
-                                            className="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                            className="py-2.5 sm:py-3 px-4 block w-full border-gray-200 dark:border-gray-700 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 disabled:pointer-events-none"
                                             required=""
                                             aria-describedby="name-error"
                                         />
@@ -124,7 +124,7 @@ const Signup = () => {
                                     </div>
                                     {
                                         (signupForm.errors.name && signupForm.touched.name) && (
-                                            <p className="text-xs text-red-600 mt-2" id="email-error">
+                                            <p className="text-xs text-red-600 dark:text-red-400 mt-2" id="email-error">
                                                 {signupForm.errors.name}
                                             </p>
                                         )
@@ -134,7 +134,7 @@ const Signup = () => {
                                 {/* End Form Group */}
                                 {/* Form Group */}
                                 <div>
-                                    <label htmlFor="email" className="block text-sm mb-2">
+                                    <label htmlFor="email" className="block text-sm mb-2 dark:text-gray-300">
                                         Email address
                                     </label>
                                     <div className="relative">
@@ -144,7 +144,7 @@ const Signup = () => {
                                             name="email"
                                             onChange={signupForm.handleChange}
                                             value={signupForm.values.email}
-                                            className="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                            className="py-2.5 sm:py-3 px-4 block w-full border-gray-200 dark:border-gray-700 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 disabled:pointer-events-none"
                                             // required=""
                                             aria-describedby="email-error"
                                         />
@@ -157,13 +157,13 @@ const Signup = () => {
                                                 viewBox="0 0 16 16"
                                                 aria-hidden="true"
                                             >
-                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                                                <path d="M16 8A8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                                             </svg>
                                         </div>
                                     </div>
                                     {
                                         (signupForm.errors.email && signupForm.touched.email) && (
-                                            <p className="text-xs text-red-600 mt-2" id="email-error">
+                                            <p className="text-xs text-red-600 dark:text-red-400 mt-2" id="email-error">
                                                 {signupForm.errors.email}
                                             </p>
                                         )
@@ -172,7 +172,7 @@ const Signup = () => {
                                 {/* End Form Group */}
                                 {/* Form Group */}
                                 <div>
-                                    <label htmlFor="password" className="block text-sm mb-2">
+                                    <label htmlFor="password" className="block text-sm mb-2 dark:text-gray-300">
                                         Password
                                     </label>
                                     <div className="relative">
@@ -182,7 +182,7 @@ const Signup = () => {
                                             name="password"
                                             onChange={signupForm.handleChange}
                                             value={signupForm.values.password}
-                                            className="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                            className="py-2.5 sm:py-3 px-4 block w-full border-gray-200 dark:border-gray-700 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 disabled:pointer-events-none"
                                             required=""
                                             aria-describedby="password-error"
                                         />
@@ -201,7 +201,7 @@ const Signup = () => {
                                     </div>
                                     {
                                         (signupForm.errors.password && signupForm.touched.password) && (
-                                            <p className="text-xs text-red-600 mt-2" id="email-error">
+                                            <p className="text-xs text-red-600 dark:text-red-400 mt-2" id="email-error">
                                                 {signupForm.errors.password}
                                             </p>
                                         )
@@ -210,7 +210,7 @@ const Signup = () => {
                                 {/* End Form Group */}
                                 {/* Form Group */}
                                 <div>
-                                    <label htmlFor="confirm-password" className="block text-sm mb-2">
+                                    <label htmlFor="confirm-password" className="block text-sm mb-2 dark:text-gray-300">
                                         Confirm Password
                                     </label>
                                     <div className="relative">
@@ -220,7 +220,7 @@ const Signup = () => {
                                             name="confirmPassword"
                                             onChange={signupForm.handleChange}
                                             value={signupForm.values.confirmPassword}
-                                            className="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                            className="py-2.5 sm:py-3 px-4 block w-full border-gray-200 dark:border-gray-700 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 disabled:pointer-events-none"
                                             required=""
                                             aria-describedby="confirmPassword-error"
                                         />
@@ -239,7 +239,7 @@ const Signup = () => {
                                     </div>
                                     {
                                         (signupForm.errors.confirmPassword && signupForm.touched.confirmPassword) && (
-                                            <p className="text-xs text-red-600 mt-2" id="email-error">
+                                            <p className="text-xs text-red-600 dark:text-red-400 mt-2" id="email-error">
                                                 {signupForm.errors.confirmPassword}
                                             </p>
                                         )
@@ -253,14 +253,14 @@ const Signup = () => {
                                             id="remember-me"
                                             name="remember-me"
                                             type="checkbox"
-                                            className="shrink-0 mt-0.5 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500"
+                                            className="shrink-0 mt-0.5 border-gray-200 dark:border-gray-700 rounded-sm text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
                                         />
                                     </div>
                                     <div className="ms-3">
-                                        <label htmlFor="remember-me" className="text-sm">
+                                        <label htmlFor="remember-me" className="text-sm dark:text-gray-300">
                                             I accept the{" "}
                                             <a
-                                                className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
+                                                className="text-blue-600 dark:text-blue-400 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
                                                 href="#"
                                             >
                                                 Terms and Conditions
@@ -271,7 +271,7 @@ const Signup = () => {
                                 {/* End Checkbox */}
                                 <button
                                     type="submit"
-                                    className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                                    className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
                                 >
                                     Sign up
                                 </button>
