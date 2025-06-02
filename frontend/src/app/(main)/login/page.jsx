@@ -16,21 +16,38 @@ const Login = () => {
             email: '',
             password: ''
         }, onSubmit: (values) => {
-            console.log(values);
-            axios.post('http://localhost:5000/user/authenticate', values)
-                .then((response) => {
+            console.log(values);            axios.post('http://localhost:5000/user/authenticate', values)
+                .then(async (response) => {
                     const { token } = response.data;
                     // Decode the token to get user data
                     const decodedToken = jwtDecode(token);
-                    // Create user object from the decoded token with role
-                    const userData = { 
-                        ...decodedToken, 
-                        email: values.email,
-                        role: 'user' 
-                    };
-                    login(token, userData);
-                    toast.success('Login Successful');
-                    router.push('/');
+                    
+                    try {
+                        // Fetch the complete user profile after authentication
+                        const userResponse = await axios.get(`http://localhost:5000/user/getbyid/${decodedToken._id}`);
+                        const completeUserData = userResponse.data;
+                        
+                        // Create user object with role and complete profile data
+                        const userData = { 
+                            ...completeUserData,
+                            role: 'user' 
+                        };
+                        
+                        login(token, userData);
+                        toast.success('Login Successful');
+                        router.push('/');
+                    } catch (error) {
+                        console.error('Error fetching user data:', error);
+                        // If we can't get the full profile, still login with basic info
+                        const userData = { 
+                            ...decodedToken, 
+                            email: values.email,
+                            role: 'user' 
+                        };
+                        login(token, userData);
+                        toast.success('Login Successful');
+                        router.push('/');
+                    }
                 }).catch((err) => {
                     console.log(err);
                     toast.error('Login Failed');
