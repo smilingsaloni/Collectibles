@@ -5,12 +5,15 @@ import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import { PageLoader } from '@/components/LoadingSpinner';
 import { ShoppingCart, Plus, Minus, Trash2, CreditCard, MapPin } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import axios from 'axios';
 
 const CartPage = () => {
   const { user } = useAuth();
   const { cartItems, updateQuantity, removeFromCart } = useCart();
   const [updating, setUpdating] = useState(false);
+  const router = useRouter();
 
   const handleUpdateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) return;
@@ -30,10 +33,33 @@ const CartPage = () => {
       total + (item.product.price * item.quantity), 0
     ).toFixed(2);
   };
-
   const handleCheckout = () => {
-    // Implement checkout logic
-    alert('Checkout functionality will be implemented soon!');
+    // If not authenticated, redirect to login
+    if (!user) {
+      toast.error('Please log in to proceed to checkout');
+      router.push('/login?redirect=/user/cart');
+      return;
+    }
+    
+    // Calculate all price values
+    const subtotal = parseFloat(calculateTotal());
+    const shipping = subtotal > 100 ? 0 : 9.99;
+    const tax = subtotal * 0.08;
+    const total = subtotal + shipping + tax;
+    
+    // Store checkout data in session storage for checkout page
+    const checkoutData = {
+      items: cartItems,
+      pricing: {
+        subtotal,
+        shipping,
+        tax,
+        total
+      }
+    };
+    
+    sessionStorage.setItem('checkoutData', JSON.stringify(checkoutData));
+    router.push('/user/checkout');
   };
   if (!cartItems) {
     return <PageLoader text="Loading your cart..." />;
@@ -75,10 +101,9 @@ const CartPage = () => {
               <div className="bg-white rounded-lg shadow-sm">
                 <div className="p-6 border-b">
                   <h2 className="text-lg font-medium text-gray-900">Cart Items</h2>
-                </div>
-                <div className="divide-y divide-gray-200">
-                  {cartItems.map((item) => (
-                    <div key={item.id} className="p-6 flex items-center space-x-4">
+                </div>                <div className="divide-y divide-gray-200">
+                  {cartItems.map((item, index) => (
+                    <div key={item.product.id || index} className="p-6 flex items-center space-x-4">
                       <img
                         src={item.product.image}
                         alt={item.product.name}
@@ -94,7 +119,7 @@ const CartPage = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <button
-                          onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => handleUpdateQuantity(item.product.id, item.quantity - 1)}
                           disabled={updating || item.quantity <= 1}
                           className="p-1 rounded-md hover:bg-gray-100 disabled:opacity-50"
                         >
@@ -104,7 +129,7 @@ const CartPage = () => {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => handleUpdateQuantity(item.product.id, item.quantity + 1)}
                           disabled={updating}
                           className="p-1 rounded-md hover:bg-gray-100 disabled:opacity-50"
                         >
@@ -115,7 +140,7 @@ const CartPage = () => {
                         ${(item.product.price * item.quantity).toFixed(2)}
                       </div>
                       <button
-                        onClick={() => handleRemoveItem(item.id)}
+                        onClick={() => handleRemoveItem(item.product.id)}
                         disabled={updating}
                         className="p-2 text-red-400 hover:text-red-600 disabled:opacity-50"
                       >

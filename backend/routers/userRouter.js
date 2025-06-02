@@ -1,5 +1,6 @@
 const express = require('express');
 const Model = require('../models/userModel'); //importing user model
+const OrderModel = require('../models/orderModel'); //importing order model
 const jwt = require('jsonwebtoken'); //importing jsonwebtoken
 require('dotenv').config(); //importing dotenv
 
@@ -90,6 +91,40 @@ router.post('/authenticate', (req, res) => {
         });
 });
 
+// Order Routes
+router.post('/orders', async (req, res) => {
+    try {
+        const orderData = req.body;
+        const result = await new OrderModel(orderData).save();
+        res.status(200).json(result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({message: 'Failed to create order', error: err.message});
+    }
+});
 
+router.get('/orders/:userId', async (req, res) => {
+    try {
+        const orders = await OrderModel.find({ userId: req.params.userId })
+            .sort({ createdAt: -1 }); // Sort by most recent
+        res.status(200).json(orders);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({message: 'Failed to fetch orders', error: err.message});
+    }
+});
+
+router.get('/orders/details/:orderId', async (req, res) => {
+    try {
+        const order = await OrderModel.findById(req.params.orderId);
+        if (!order) {
+            return res.status(404).json({message: 'Order not found'});
+        }
+        res.status(200).json(order);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({message: 'Failed to fetch order details', error: err.message});
+    }
+});
 
 module.exports = router;
