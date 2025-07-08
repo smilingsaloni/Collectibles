@@ -29,9 +29,8 @@ const Navbar = () => {
 
   return (
     <motion.header
-      className={`fixed top-0 w-[100%] z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md shadow-sm py-3" : "bg-transparent py-5"
-      }`}
+      className={`fixed top-0 w-[100%] z-50 transition-all duration-300 ${isScrolled ? "bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md shadow-sm py-3" : "bg-transparent py-5"
+        }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -56,10 +55,10 @@ const Navbar = () => {
             )}
             {isAuthenticated() && isAdmin() && (
               <>
+                <NavLink href="/admin/profile">Dashboard</NavLink>
                 <NavLink href="/admin/add-products">Add Products</NavLink>
                 <NavLink href="/admin/manage-products">Manage Products</NavLink>
                 <NavLink href="/admin/manage-users">Manage Users</NavLink>
-                <NavLink href="/admin/profile">Admin Profile</NavLink>
               </>
             )}
           </nav>{" "}

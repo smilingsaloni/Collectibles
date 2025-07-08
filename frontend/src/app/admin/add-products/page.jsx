@@ -110,25 +110,25 @@ const AddProduct = () => {
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Add New Product</h2>
                 <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
                     <div className="mb-4">
-                        <label className="block mb-1 font-medium">Product Name</label>
+                        <label className="block mb-1 font-medium text-gray-800">Product Name</label>
                         <input
                             type="text"
                             name="title"
                             onChange={formik.handleChange}
                             value={formik.values.title}
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-800"
                         />
                         {formik.errors.title && formik.touched.title && (
                             <p className="text-xs text-red-600 mt-1">{formik.errors.title}</p>
                         )}
                     </div>
                     <div className="mb-4">
-                        <label className="block mb-1 font-medium">Description</label>
+                        <label className="block mb-1 font-medium text-gray-800">Description</label>
                         <textarea
                             name="description"
                             onChange={formik.handleChange}
                             value={formik.values.description}
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-800"
                             rows={4}
                         />
                         {formik.errors.description && formik.touched.description && (
@@ -136,12 +136,12 @@ const AddProduct = () => {
                         )}
                     </div>
                     <div className="mb-4">
-                        <label className="block mb-1 font-medium">Category</label>
+                        <label className="block mb-1 font-medium text-gray-800">Category</label>
                         <select
                             name="category"
                             onChange={formik.handleChange}
                             value={formik.values.category}
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-800"
                         >
                             <option value="">Select a category</option>
                             {categories.map((cat) => (
@@ -153,13 +153,13 @@ const AddProduct = () => {
                         )}
                     </div>
                     <div className="mb-4">
-                        <label className="block mb-1 font-medium">Price ($)</label>
+                        <label className="block mb-1 font-medium text-gray-800">Price ($)</label>
                         <input
                             type="number"
                             name="price"
                             onChange={formik.handleChange}
                             value={formik.values.price}
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-800"
                             min="1"
                         />
                         {formik.errors.price && formik.touched.price && (
@@ -167,13 +167,13 @@ const AddProduct = () => {
                         )}
                     </div>
                     <div className="mb-6">
-                        <label className="block mb-1 font-medium">Product Image</label>
+                        <label className="block mb-1 font-medium text-gray-800">Product Image</label>
                         <input
                             type="file"
                             name="image"
                             accept="image/*"
                             onChange={handleImageChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-800"
                         />
                         {formik.errors.image && formik.touched.image && (
                             <p className="text-xs text-red-600 mt-1">{formik.errors.image}</p>

@@ -76,7 +76,7 @@ const ManageProducts = () => {
                       <div className="flex items-center">
                         <img
                           className="h-16 w-16 rounded-lg object-cover"
-                          src={product.image || "/placeholder-image.jpg"}
+                          src={product.image}
                           alt={product.title}
                         />
                         <div className="ml-4">

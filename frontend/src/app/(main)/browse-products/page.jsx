@@ -219,7 +219,7 @@ const BrowseProductsPage = () => {
                 placeholder="Search products..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
               />
             </div>
 
@@ -227,10 +227,10 @@ const BrowseProductsPage = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
             >
               {categories.map(category => (
-                <option key={category.id} value={category.id}>
+                <option key={category.id} value={category.id} className="text-gray-800">
                   {category.name}
                 </option>
               ))}
@@ -240,12 +240,12 @@ const BrowseProductsPage = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
             >
-              <option value="name">Sort by Name</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
+              <option value="name" className="text-gray-800">Sort by Name</option>
+              <option value="price-low" className="text-gray-800">Price: Low to High</option>
+              <option value="price-high" className="text-gray-800">Price: High to Low</option>
+              <option value="rating" className="text-gray-800">Highest Rated</option>
             </select>
 
             {/* View Mode Toggle */}
