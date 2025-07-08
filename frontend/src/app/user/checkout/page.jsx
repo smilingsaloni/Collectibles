@@ -23,7 +23,7 @@ const CheckoutPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [checkoutData, setCheckoutData] = useState(null);
-  
+
   // Load checkout data from session storage
   useEffect(() => {
     const storedData = sessionStorage.getItem('checkoutData');
@@ -46,7 +46,7 @@ const CheckoutPage = () => {
       total + (item.product.price * item.quantity), 0
     ).toFixed(2);
   };
-  
+
   const getSubtotal = () => {
     if (checkoutData) {
       return checkoutData.pricing.subtotal.toFixed(2);
@@ -55,7 +55,7 @@ const CheckoutPage = () => {
       total + (item.product.price * item.quantity), 0
     ).toFixed(2);
   };
-  
+
   const getShipping = () => {
     if (checkoutData) {
       return checkoutData.pricing.shipping.toFixed(2);
@@ -63,7 +63,7 @@ const CheckoutPage = () => {
     const subtotal = parseFloat(getSubtotal());
     return (subtotal > 100 ? 0 : 9.99).toFixed(2);
   };
-  
+
   const getTax = () => {
     if (checkoutData) {
       return checkoutData.pricing.tax.toFixed(2);
@@ -85,7 +85,7 @@ const CheckoutPage = () => {
       const shipping = parseFloat(getShipping());
       const tax = parseFloat(getTax());
       const total = parseFloat(calculateTotal());
-      
+
       // Prepare order data
       const orderData = {
         userId: user?._id,
@@ -108,7 +108,7 @@ const CheckoutPage = () => {
         total: total,
         paymentMethod: 'Cash on Delivery',
       };
-      
+
       // Send order to backend
       const response = await fetch('http://localhost:5000/user/orders', {
         method: 'POST',
@@ -117,11 +117,10 @@ const CheckoutPage = () => {
         },
         body: JSON.stringify(orderData),
       });
-      
+
       if (!response.ok) {
         throw new Error('Server error: ' + response.statusText);
       }
-      
       // Clear cart and checkout data
       clearCart();
       sessionStorage.removeItem('checkoutData');
@@ -142,61 +141,61 @@ const CheckoutPage = () => {
         <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Shipping Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <input 
-              name="name" 
-              value={form.name} 
-              onChange={handleChange} 
-              required 
-              placeholder="Full Name" 
-              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600" 
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              placeholder="Full Name"
+              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600"
             />
-            <input 
-              name="email" 
-              value={form.email} 
-              onChange={handleChange} 
-              required 
-              placeholder="Email" 
-              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600" 
+            <input
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              placeholder="Email"
+              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600"
             />
-            <input 
-              name="phone" 
-              value={form.phone} 
-              onChange={handleChange} 
-              required 
-              placeholder="Phone Number" 
-              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600" 
+            <input
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              required
+              placeholder="Phone Number"
+              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600"
             />
-            <input 
-              name="address" 
-              value={form.address} 
-              onChange={handleChange} 
-              required 
-              placeholder="Address" 
-              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600 md:col-span-2" 
+            <input
+              name="address"
+              value={form.address}
+              onChange={handleChange}
+              required
+              placeholder="Address"
+              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600 md:col-span-2"
             />
-            <input 
-              name="city" 
-              value={form.city} 
-              onChange={handleChange} 
-              required 
-              placeholder="City" 
-              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600" 
+            <input
+              name="city"
+              value={form.city}
+              onChange={handleChange}
+              required
+              placeholder="City"
+              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600"
             />
-            <input 
-              name="state" 
-              value={form.state} 
-              onChange={handleChange} 
-              required 
-              placeholder="State" 
-              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600" 
+            <input
+              name="state"
+              value={form.state}
+              onChange={handleChange}
+              required
+              placeholder="State"
+              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600"
             />
-            <input 
-              name="zip" 
-              value={form.zip} 
-              onChange={handleChange} 
-              required 
-              placeholder="ZIP Code" 
-              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600" 
+            <input
+              name="zip"
+              value={form.zip}
+              onChange={handleChange}
+              required
+              placeholder="ZIP Code"
+              className="border rounded p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white dark:border-gray-600"
             />
           </div>
           <h2 className="text-lg font-semibold mb-4 mt-6 text-gray-900 dark:text-white">Payment Method</h2>
@@ -207,9 +206,9 @@ const CheckoutPage = () => {
             </label>
           </div>
           {error && <div className="text-red-500 dark:text-red-400 mb-4">{error}</div>}
-          <button 
-            type="submit" 
-            disabled={submitting} 
+          <button
+            type="submit"
+            disabled={submitting}
             className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold"
           >
             {submitting ? 'Placing Order...' : 'Place Order'}

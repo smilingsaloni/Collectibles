@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
           <CartProvider>
             <div className="">
               <Navbar />
-              <div className="py-20">
+              <div className="py-20 dark:bg-gray-900">
                 {children}
               </div>
               <Footer />
