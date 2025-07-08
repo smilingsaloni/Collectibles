@@ -76,7 +76,7 @@ const ManageProducts = () => {
                       <div className="flex items-center">
                         <img
                           className="h-16 w-16 rounded-lg object-cover"
-                          src={product.image}
+                          src={product.images?.[0] || '/api/placeholder/100/100'}
                           alt={product.title}
                         />
                         <div className="ml-4">
